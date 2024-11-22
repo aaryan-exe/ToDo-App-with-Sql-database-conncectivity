@@ -1,12 +1,11 @@
 from tkinter import *
 from tkinter import messagebox
-from tkinter import Tk, Button, Label, PhotoImage, Frame
+import customtkinter
 import os
 import mysql.connector
 import datetime
 
 global window
-global task
 #Connecting database
 # def database_connection():
 #     mydb=mysql.connector.connect(
@@ -30,23 +29,30 @@ def add_task():
     else:
         custom_checkbox()
 
-
-def custom_checkbox(window):
-    img = PhotoImage(file="images/custom_checkbox.png")
-    uncheck_button = Button(window, image=img)
-    uncheck_button.img=img
-    uncheck_button.pack
-    
-    
+def custom_checkbox():
+    frame2=customtkinter.CTkFrame(master=window, fg_color="black", height=50, corner_radius=0)
+    frame2.pack(anchor ='w', fill='both',side="top")
+    task1=Label(frame2,text='task',font=("inter", 11), background="white")
+    task1.pack(anchor='w', padx=10)
 
 #Creating main window
-window=Tk()
+window=customtkinter.CTk()
 window.geometry("900x600")
-addtsk=Label(window, text="Add task", font=("inter", 16)).place(x=20, y=20)
-taskEntry=Entry(window, width=40)
-taskEntry.place(x=20, y=55)
-addbtn=Button(window, text="Add task", command=add_task, font=("inter", 11)).place(x=20, y=80)
+# window.resizable(False, False)
+window.title("ToDo App")
+customtkinter.set_appearance_mode("light")
 
+InputFrame=customtkinter.CTkFrame(master=window, fg_color="Light Grey", height=130, corner_radius=0)
+InputFrame.pack(fill='both', side="top", anchor='w')
+
+addtsk = customtkinter.CTkLabel(InputFrame, text="Add Task", font=("Inter", 16), fg_color=None)
+addtsk.pack(padx=10,pady=10, anchor='w')
+
+taskEntry=customtkinter.CTkEntry(InputFrame, width=300)
+taskEntry.pack(padx=10,pady=10, anchor='w')
+
+addbtn=customtkinter.CTkButton(InputFrame, text="Add task", command=add_task, font=("inter", 11))
+addbtn.pack(padx=10,pady=10, anchor='w')
 
 
 
