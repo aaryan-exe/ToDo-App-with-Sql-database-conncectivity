@@ -1,1 +1,1 @@
-select * from task
+select * from task;
