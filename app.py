@@ -7,6 +7,7 @@ from datetime import date, datetime
 global window
 global task
 now = datetime.now()
+tasklst=[]
 #Connecting database
 def database_connection():
     global mydb, cursor
@@ -38,6 +39,7 @@ def add_task():
         cursor.execute(sql,(task, now.strftime("%H:%M:%S"), date.today()))
         mydb.commit()
         print("Task added successfully.")
+        tasklst.append(task)
         custom_checkbox(task)
 
 
@@ -52,8 +54,12 @@ def custom_checkbox(task):
     uncheck_btn.pack(anchor='w')
     taskEntry.delete(0, END)
     print(uncheck_btn.get())
-    deletebtn=customtkinter.CTkButton(frame2, text="Delete", fg_color="red")
+    deletebtn=customtkinter.CTkButton(frame2, text="Delete", fg_color="red", command=deletetask)
     deletebtn.pack(anchor='ne')
+    
+def deletetask():
+    tasklst.pop()
+    print(tasklst)
 
 
 #Creating main window
