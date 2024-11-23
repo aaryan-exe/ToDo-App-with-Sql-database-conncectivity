@@ -1,42 +1,59 @@
 from tkinter import *
 from tkinter import messagebox
 import customtkinter
-import os
 import mysql.connector
-import datetime
+from datetime import date, datetime
 
 global window
+global task
+now = datetime.now()
 #Connecting database
 def database_connection():
+    global mydb, cursor
     mydb=mysql.connector.connect(
     host="localhost",
     user="root",
     password="system",
-    database="ToDo_task"
+    database="todo_task"
 )
-    if mydb.is_connected:
+    cursor=mydb.cursor()
+    if mydb.is_connected():
         print("Connected to MySQL Database.....")
     else:
-        messagebox.ERROR("server error", "Unable to connct to server")
+        messagebox.showerror("server error", "Unable to connct to server")
         window.destroy
 
+def ensure_connection():
+    if not mydb.is_connected():
+        database_connection()
 
 #Add task button function
 def add_task():
+    ensure_connection()
     task=taskEntry.get()
     if task.strip()=="":
-        messagebox.showwarning("Input error", "Wrong input")
+        messagebox.showwarning("Input Error", "Task cannot be empty.")
     else:
-        custom_checkbox()
-
-def custom_checkbox():
-    frame2=customtkinter.CTkFrame(master=window, fg_color="black", height=50, corner_radius=0)
-    frame2.pack(anchor ='w', fill='both',side="top")
-    task1=Label(frame2,text='task',font=("inter", 11), background="white")
-    task1.pack(anchor='w', padx=10)
-    uncheck_btn=customtkinter.CTkButton(master=frame2,text="box", corner_radius=12)
+        sql="INSERT INTO task (task_name, task_time, task_date) VALUES (%s, %s, %s)"
+        cursor.execute(sql,(task, now.strftime("%H:%M:%S"), date.today()))
+        mydb.commit()
+        print("Task added successfully.")
+        custom_checkbox(task)
 
 
+
+#creating checkboxes
+def custom_checkbox(task):
+    frame2=customtkinter.CTkFrame(master=window, height=50, corner_radius=0, fg_color="transparent")
+    frame2.pack(anchor ='w', fill='both',side="top", padx=10, pady=5)
+    task1=Label(frame2,font=("inter", 11))
+    task1.pack(anchor='w')
+    uncheck_btn=customtkinter.CTkCheckBox(frame2, text=task, font=("inter", 12))
+    uncheck_btn.pack(anchor='w')
+    taskEntry.delete(0, END)
+    print(uncheck_btn.get())
+    deletebtn=customtkinter.CTkButton(frame2, text="Delete", fg_color="red")
+    deletebtn.pack(anchor='ne')
 
 
 #Creating main window
