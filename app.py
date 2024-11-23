@@ -46,7 +46,7 @@ def add_task():
 
 #creating checkboxes
 def custom_checkbox(task):
-    frame2=customtkinter.CTkFrame(master=window, height=50, corner_radius=0, fg_color="transparent")
+    frame2=customtkinter.CTkFrame(master=window,corner_radius=0, fg_color="transparent")
     frame2.pack(anchor ='w', fill='both',side="top", padx=10, pady=5)
     task1=Label(frame2,font=("inter", 11))
     task1.pack(anchor='w')
@@ -54,18 +54,15 @@ def custom_checkbox(task):
     uncheck_btn.pack(anchor='w')
     taskEntry.delete(0, END)
     print(uncheck_btn.get())
-    deletebtn=customtkinter.CTkButton(frame2, text="Delete", fg_color="red", command=deletetask)
-    deletebtn.pack(anchor='ne')
     
-def deletetask():
-    tasklst.pop()
-    print(tasklst)
+    
 
 
 #Creating main window
 window=customtkinter.CTk()
 window.geometry("900x600")
-
+sbb=Scrollbar(window)
+sbb.pack(side='right', fill=Y)
 window.title("ToDo App")
 customtkinter.set_appearance_mode("light")
 
@@ -75,7 +72,7 @@ InputFrame.pack(fill='both', side="top", anchor='w')
 addtsk = customtkinter.CTkLabel(InputFrame, text="Add Task", font=("Inter", 16), fg_color=None)
 addtsk.pack(padx=10,pady=4, anchor='w')
 
-taskEntry=customtkinter.CTkEntry(InputFrame, width=300)
+taskEntry=customtkinter.CTkEntry(InputFrame, width=300, corner_radius=8, border_color="light blue")
 taskEntry.pack(padx=10,pady=4, anchor='w')
 
 addbtn=customtkinter.CTkButton(InputFrame,
