@@ -106,3 +106,6 @@ addbtn.pack(padx=10, pady=4, anchor='w')
 database_connection()  # Connect to the database
 load_tasks()  # Load tasks from the database when the app starts
 window.mainloop()
+
+
+
